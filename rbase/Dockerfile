@@ -27,6 +27,7 @@ RUN apt-get update \
 	&& apt-get upgrade -y \
  	&& apt-get install -y --no-install-recommends \
 		python3-pip \
+		python3-dev \
 		python3-cryptography \
  		ed \
  		less \
@@ -42,8 +43,8 @@ RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
  	&& locale-gen en_US.utf8 \
  	&& /usr/sbin/update-locale LANG=en_US.UTF-8
 
- ENV LC_ALL en_US.UTF-8
- ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
 
 # ## Use Debian unstable via pinning -- new style via APT::Default-Release
 # RUN echo "deb http://http.debian.net/debian sid main" > /etc/apt/sources.list.d/debian-unstable.list \
@@ -69,11 +70,6 @@ RUN apt-get install -y --no-install-recommends \
 
 # RUN apt-get install -y --no-install-recommends \    
 #  		r-base=${R_BASE_VERSION}-*
-    # \
- 		#r-base-dev=${R_BASE_VERSION}-* \
-    #r-base-core=${R_BASE_VERSION}-* \
- 		#r-recommended=${R_BASE_VERSION}-*
-    # \
  	&& chown root:adm "/usr/local/lib/R/site-library" \
  	&& chmod g+ws "/usr/local/lib/R/site-library" \
  	&& ln -s /usr/lib/R/site-library/littler/examples/install.r /usr/local/bin/install.r \
