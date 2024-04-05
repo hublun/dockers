@@ -1,12 +1,12 @@
 ## Emacs, make this -*- mode: sh; -*-
 
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 
 LABEL org.opencontainers.image.licenses="GPL-2.0-or-later"
     #   org.opencontainers.image.source="https://github.com/rocker-org/rocker" \
     #   org.opencontainers.image.vendor="Rocker Project" \
     #   org.opencontainers.image.authors="Dirk Eddelbuettel <edd@debian.org>"
-
+ENV NAME=rjammy4.3
 # Creates a new user account with the username "dulun".
 # Sets the default login shell for the user to /bin/bash. This means that when the user logs in, they will be presented
 # with the Bash shell, which is the most commonly used shell in Linux.
@@ -22,26 +22,33 @@ RUN useradd -s /bin/bash -m drclab \
  	&& usermod -a -G adm drclab
 
 # ## NB: No 'apt-get upgrade -y' in official images, see eg
-ENV R_VERSION=4.3.3
-ENV R_HOME=/usr/local/lib/R
-ENV TZ=Etc/UTC
+# ENV R_VERSION=4.3.3
+# ENV R_HOME=/usr/local/lib/R
+# ENV TZ=Etc/UTC
 
-COPY scripts/install_R_source.sh /home/drclab/install_R_source.sh
-# RUN apt-get update \
-# 	#&& apt-get upgrade -y
-#  	&& apt-get install -y lsb-release \
+# COPY scripts/install_R_source.sh /home/drclab/install_R_source.sh
+RUN apt-get update \
+	&& apt-get install -y lsb-release \
 # 	python3-pip \
 # 	python3-dev \
 # 	python3-cryptography \
-#  	# 	ed \
-#  	# 	less \
-#  	# 	locales \
-#  	nano \
-#  	wget \
-#  	ca-certificates
+ 	ed \
+ 	less \
+ 	locales \
+  	nano \
+  	wget \
+  	ca-certificates
  	#&& rm -rf /var/lib/apt/lists/*
 
-# RUN apt-get install -y --no-install-recommends software-properties-common dirmngr
+RUN apt-get install -y --no-install-recommends software-properties-common dirmngr
+
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc \
+# # add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
+     && add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+
+RUN apt-get update \
+#  	&& apt-get upgrade -y
+    && apt-get install -y --no-install-recommends r-base
 # #RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
 # RUN apt install -y --no-install-recommends gfortran
 # RUN wget -P /home/drclab/ https://cran.rstudio.com/src/base/R-4/R-4.3.3.tar.gz
