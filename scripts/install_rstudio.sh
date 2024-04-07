@@ -97,6 +97,7 @@ echo "auth-none=1" >>/etc/rstudio/disable_auth_rserver.conf
 
 ## Set up RStudio init scripts
 mkdir -p /etc/services.d/rstudio
+
 cat <<"EOF" >/etc/services.d/rstudio/run
 #!/usr/bin/with-contenv bash
 ## load /etc/environment vars first:
