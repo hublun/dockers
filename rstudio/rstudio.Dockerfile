@@ -16,7 +16,7 @@ RUN /home/drclab/drudio.sh
 ADD scripts/install_rstudio.sh /home/drclab/rstudio.sh
 RUN /home/drclab/rstudio.sh
 #-----------------------------------------------------
-USER ${DEFAULT_USER}
+#USER ${DEFAULT_USER}
 
 EXPOSE 8787
-CMD /etc/services.d/rstudio/run
+CMD rserver --server-daemonize 0
