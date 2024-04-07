@@ -1,3 +1,5 @@
 docker build . -f rbase/rjammy.Dockerfile -t drclab/rjammy:4.3.3
 docker build . -f stan/rstan.Dockerfile -t drclab/rstan:2.32.6
 docker build . -f jupyter/rjupyter.Dockerfile -t drclab/rjupyter:5.7.2
+
+docker build . -f rstudio/rstudio.Dockerfile -t drclab/drudio
